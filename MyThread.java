@@ -24,19 +24,19 @@ public class MyThread extends Thread
         this.rect = rect;
     }
 
-    @Override
     /**
      * Main method in each thread. This method will continuously move the
      * square around the screen. I will only move the square though if
      * you don't go out of the screen bounds.
      */
+    @Override
     public void run()
     {
         super.run();
         // grab the canvas from the main class
         MyCanvas canvas = Main.canvas;
 
-        // reandom ibect used for direction and coordinates
+        // random object used for direction and coordinates
         Random rand = new Random();
 
         // run until the user stops the process

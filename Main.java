@@ -83,7 +83,7 @@ public class Main
             // current thread
             int x = rand.nextInt(SCREEN_WIDTH);
             int y = rand.nextInt(SCREEN_HEIGHT);
-            threads[i] = new MyThread(new MyRectangle(x, y, SQUARE_SIZE, SQUARE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT));
+            threads[i] = new MyThread(new MyRectangle(x, y, SQUARE_SIZE, SQUARE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, rand.nextInt(9)));
         }
 
         // return the finalized array

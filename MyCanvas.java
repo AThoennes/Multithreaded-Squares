@@ -31,6 +31,7 @@ public class MyCanvas extends JComponent
         for (int i = 0; i < threads.length; i ++)
         {
             MyRectangle tmp = threads[i].getRect();
+            g.setColor(tmp.getColor());
             g.fillRect(tmp.getX(), tmp.getY(), tmp.getWidth(), tmp.getHeight());
         }
     }

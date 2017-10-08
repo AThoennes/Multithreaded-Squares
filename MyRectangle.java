@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created Oct. 8, 2017
  *
@@ -18,6 +20,9 @@ public class MyRectangle
     int height;
     int screenWidth;
     int screenHeight;
+    Color color;
+
+    final Color COLORS[] = {Color.BLACK, Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.YELLOW};
 
 
     /**
@@ -32,7 +37,7 @@ public class MyRectangle
      * @param screenWidth
      * @param screenHeight
      */
-    MyRectangle (int x, int y, int width, int height, int screenWidth, int screenHeight)
+    MyRectangle (int x, int y, int width, int height, int screenWidth, int screenHeight, int colorIdx)
     {
         this.x = x;
         this.y = y;
@@ -40,6 +45,7 @@ public class MyRectangle
         this.height = height;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.color = COLORS[colorIdx];
     }
 
     /**
@@ -115,5 +121,15 @@ public class MyRectangle
     public int getHeight()
     {
         return height;
+    }
+
+    /**
+     * get the color of this rectangle
+     *
+     * @return
+     */
+    public Color getColor()
+    {
+        return color;
     }
 }
