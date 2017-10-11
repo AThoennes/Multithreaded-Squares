@@ -51,6 +51,7 @@ public class MyThread extends Thread
             int dirX = rand.nextInt(2);
             int dirY = rand.nextInt(2);
 
+
             // then calculate where the square would move to for each direction
             int negX = this.rect.getX() - tempX;
             int negY = this.rect.getY() - tempY;

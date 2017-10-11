@@ -26,7 +26,7 @@ public class MyCanvas extends JComponent
      *
      * @param g
      */
-    public void paint(Graphics g)
+    public synchronized void paint(Graphics g)
     {
         for (int i = 0; i < threads.length; i ++)
         {
