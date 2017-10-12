@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -29,15 +32,8 @@ public class Main
 
     public static void main(String [] args)
     {
-        // create a canvas to be added the frame
+        // create a canvas to be added to the frame
         canvas = new MyCanvas();
-
-        // prompt the user for however many threads they want
-        int numOfThreads = Integer.parseInt(JOptionPane.showInputDialog(
-                null,
-                "How many threads?",
-                "Multithreaded Moving Squares",
-                1));
 
         // create a frame and set up it's properties
         JFrame frame = new JFrame("Multithreaded Moving Squares");
@@ -47,17 +43,87 @@ public class Main
         // add the canvas to the frame
         frame.getContentPane().add(canvas);
 
-        // show the frame
-        frame.setVisible(true);
+        // array of buttons that are displayed on the JOptionpane
+        // static means you set the number of threads to draw squares and it can not change
+        // dynamic means you can click the screen and add threads as you click
+        //                      0          1
+        String[] buttons = {"Static", "Dynamic"};
 
-        // create a threads array that will hold all the threads running
-        MyThread threads[] = createThreads(numOfThreads);
+        // ask the user if they want static or dynamic threads
+        int ans = JOptionPane.showOptionDialog(
+                null,
+                "Static means you set the number of " +
+                        "threads to draw squares and it can not change\n" +
+                        "Dynamic means you can click the screen and add threads as you click",
+                "Which type of thread",
+                JOptionPane.DEFAULT_OPTION, 0, null, buttons, buttons);
 
-        // give the canvas a copy of the threads
-        canvas.setThreads(threads);
+        if (ans == 0)
+        {
+            // static threads
+            // prompt the user for however many threads they want
+            int numOfThreads = Integer.parseInt(JOptionPane.showInputDialog(
+                    null,
+                    "How many threads?",
+                    "Multithreaded Moving Squares",
+                    1));
 
-        // now start running all the threads
-        startThreads(threads);
+            // create a threads array that will hold all the threads running
+            MyThread threads[] = createThreads(numOfThreads);
+
+            // give the canvas a copy of the threads
+            canvas.setThreads(threads);
+
+            // now start running all the threads
+            startThreads(threads);
+
+            // show the frame
+            frame.setVisible(true);
+        }
+        else if (ans == 1)
+        {
+            ArrayList<MyThread> threads = new ArrayList<>();
+
+            // dynamic threads
+            canvas.addMouseListener(new MouseListener()
+            {
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    // random object used to determine color of square
+                    Random rand = new Random();
+
+                    // when you click the screen, a new thread is created and the square moves around the canvas
+                    threads.add(new MyThread(new MyRectangle(e.getX(), e.getY(), SQUARE_SIZE,
+                            SQUARE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, rand.nextInt(9))));
+
+                    // immediately start the thread
+                    threads.get(threads.size() - 1).start();
+
+                    // readjust the threads array list to accommodate the new thread and the old ones
+                    canvas.setThreads(threads);
+                }
+
+                //unused implemented methods
+                @Override
+                public void mousePressed(MouseEvent e) {}
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+                @Override
+                public void mouseEntered(MouseEvent e) {}
+                @Override
+                public void mouseExited(MouseEvent e) {}
+            });
+
+            // show the frame
+            frame.setVisible(true);
+        }
+        else
+        {
+            // if you don't choose either option then
+            // exit the program
+            System.exit(0);
+        }
     }
 
     /**
@@ -83,7 +149,8 @@ public class Main
             // current thread
             int x = rand.nextInt(SCREEN_WIDTH);
             int y = rand.nextInt(SCREEN_HEIGHT);
-            threads[i] = new MyThread(new MyRectangle(x, y, SQUARE_SIZE, SQUARE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, rand.nextInt(9)));
+            threads[i] = new MyThread(new MyRectangle(x, y, SQUARE_SIZE, SQUARE_SIZE,
+                    SCREEN_WIDTH, SCREEN_HEIGHT, rand.nextInt(9)));
         }
 
         // return the finalized array

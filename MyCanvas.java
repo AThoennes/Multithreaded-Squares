@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created Oct. 8, 2017
@@ -15,11 +16,7 @@ public class MyCanvas extends JComponent
 {
     // array to hold threads
     MyThread threads[];
-
-    /**
-     * empty constructor
-     */
-    public MyCanvas() {}
+    ArrayList<MyThread> threadsList;
 
     /**
      * This paints all the squares that the threads are changing.
@@ -28,10 +25,56 @@ public class MyCanvas extends JComponent
      */
     public synchronized void paint(Graphics g)
     {
+        // check to see if threads was declared
+        if (threads != null)
+        {
+            staticThreads(g);
+        } // if it wasn't declared then try to use threadsList
+        else if (threadsList != null)
+        {
+            dynamicThreads(g);
+        }
+    }
+
+    /**
+     * This method uses the array called threads to draw the threads it contains
+     * to the canvas. You can not add new threads to this array.
+     *
+     * @param g
+     */
+    private void staticThreads(Graphics g)
+    {
         for (int i = 0; i < threads.length; i ++)
         {
+            // get the rect object from the current thread
             MyRectangle tmp = threads[i].getRect();
+
+            // get the color that thread contains
             g.setColor(tmp.getColor());
+
+            // now draw the rectangle
+            g.fillRect(tmp.getX(), tmp.getY(), tmp.getWidth(), tmp.getHeight());
+        }
+    }
+
+    /**
+     * This method uses the array called threadsList to draw the threads it contains.
+     * You are able to add threads to this list simply by clicking on the screen where
+     * you want the thread to appear
+     *
+     * @param g
+     */
+    private void dynamicThreads(Graphics g)
+    {
+        for (int i = 0; i < threadsList.size(); i ++)
+        {
+            // get the rect object from the current thread
+            MyRectangle tmp = threadsList.get(i).getRect();
+
+            // get the color that thread contains
+            g.setColor(tmp.getColor());
+
+            // now draw the rectangle
             g.fillRect(tmp.getX(), tmp.getY(), tmp.getWidth(), tmp.getHeight());
         }
     }
@@ -45,5 +88,16 @@ public class MyCanvas extends JComponent
     public void setThreads(MyThread[] threads)
     {
         this.threads = threads;
+    }
+
+    /**
+     * This method sets the thread list every
+     * time the user clicks the screen
+     *
+     * @param threadsList
+     */
+    public void setThreads(ArrayList<MyThread> threadsList)
+    {
+        this.threadsList = threadsList;
     }
 }
